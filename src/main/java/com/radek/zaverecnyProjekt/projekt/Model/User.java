@@ -17,7 +17,6 @@ public class User {
         this.Uuid = Uuid;
     }
     public User(){
-
     }
 
     public int getID() {
