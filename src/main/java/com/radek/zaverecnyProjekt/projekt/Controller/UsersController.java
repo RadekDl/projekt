@@ -22,9 +22,11 @@ public class UsersController {
     @Autowired
     JdbcTemplate jdbcTemplate;
 
+
+
     @GetMapping("users")
     public List<User> getAllUsers(){
-        List<User> users = jdbcTemplate.query("select * froum users;", new RowMapper<User>() {
+        List<User> users = jdbcTemplate.query("select * from users;", new RowMapper<User>() {
                     @Override
                     public User mapRow(ResultSet result, int rowNum) throws SQLException {
                         User user = new User();
@@ -41,8 +43,8 @@ public class UsersController {
         return users;
     }
     @GetMapping("users{ID}")
-    public  User getId(@PathVariable("id")int id){
-        String sql = "select * from users where id = "+id;
+    public  User getId(@PathVariable("ID")int id){
+        String sql = "select * from users where ID = "+id;
         User user=jdbcTemplate.queryForObject(sql, new RowMapper <User>() {
             public User mapRow(ResultSet result, int rowNum)throws SQLException{
                 User user = new User();
