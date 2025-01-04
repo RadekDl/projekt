@@ -30,13 +30,14 @@ public class UsersController {
                     @Override
                     public User mapRow(ResultSet result, int rowNum) throws SQLException {
                         User user = new User();
-                        //napsat dle konstruktoru
                         user.setID(result.getInt("ID"));
                         user.setName(result.getString("Name"));
                         user.setSurname(result.getString("Surname"));
                         user.setPersonID(result.getString("PersonID"));
-                        user.setUuid(UUID.randomUUID());
+                        String uuidString = result.getString("UUID");
+                        user.setUuid(UUID.fromString(uuidString));
                         return  user;
+
                     }
                 });
 
@@ -52,7 +53,8 @@ public class UsersController {
                 user.setName(result.getString("Name"));
                 user.setSurname(result.getString("Surname"));
                 user.setPersonID(result.getString("PersonID"));
-                user.setUuid(UUID.randomUUID());
+                String uuidString = result.getString("UUID");
+                user.setUuid(UUID.fromString(uuidString));
                 return user;
             }
         });
