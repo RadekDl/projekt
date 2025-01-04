@@ -41,7 +41,7 @@ public class UsersController {
 
         return users;
     }
-    @GetMapping("api/v1/users{ID}")
+    @GetMapping("users{ID}")
     public  User getId(@PathVariable("id")int id){
         String sql = "select * from users where id = "+id;
         User user=jdbcTemplate.queryForObject(sql, new RowMapper <User>() {
