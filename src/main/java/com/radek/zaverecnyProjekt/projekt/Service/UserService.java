@@ -38,7 +38,7 @@ public class UserService {
 
     }
 
-    public  List<User>  getId(int id) {
+    public List<User> getId(int id) {
         String sql = "select * from users where ID = " + id;
         List<User> user = jdbcTemplate.query(sql, new RowMapper<User>() {
             public User mapRow(ResultSet result, int rowNum) throws SQLException {
@@ -54,20 +54,19 @@ public class UserService {
         });
 
         return user;
-
-
-//    private List<User> userList = new ArrayList<>();
-//
-//    public void addUser(User user){
-//        userList.add(user);
-//    }
-//
-//    public List<User> getUserList() {
-//        return userList;
-//    }
-//
-//    public void setUserList(List<User> userList) {
-//        this.userList = userList;
-//    }
     }
-}
+
+        public void addUser(User user) {
+             if (user.getUuid() == null) {
+                user.setUuid(UUID.randomUUID());
+            }
+
+            // SQL příkaz pro vložení nového uživatele
+            String sql = "INSERT INTO users (Name, Surname, PersonID, UUID) VALUES (?, ?, ?, ?)";
+
+            // Vložení uživatele do databáze
+            jdbcTemplate.update(sql, user.getName(), user.getSurname(), user.getPersonID(), user.getUuid().toString());
+        }
+    }
+
+

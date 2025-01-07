@@ -3,10 +3,9 @@ package com.radek.zaverecnyProjekt.projekt.Controller;
 import com.radek.zaverecnyProjekt.projekt.Model.User;
 import com.radek.zaverecnyProjekt.projekt.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -28,6 +27,11 @@ public class UsersController {
     @GetMapping("users{ID}")
     public  List<User> getId(@PathVariable("ID")int id){
         return userService.getId(id);
+    }
+
+    @PostMapping("users")
+    public void addUser(@RequestBody User user) {
+        userService.addUser(user);
     }
 
 }
