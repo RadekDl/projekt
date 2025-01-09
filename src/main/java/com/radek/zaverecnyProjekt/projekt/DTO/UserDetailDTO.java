@@ -1,40 +1,28 @@
-package com.radek.zaverecnyProjekt.projekt.Model;
-
-import org.springframework.boot.autoconfigure.domain.EntityScan;
+package com.radek.zaverecnyProjekt.projekt.DTO;
 
 import java.util.UUID;
 
-
-public class User {
+public class UserDetailDTO {
     private int ID;
     private String name;
     private String surname;
     private String personID;
     private UUID Uuid;
 
-    public User(int ID, String name, String surname, String personID, UUID Uuid) {
+    public UserDetailDTO(int ID, String name, String surname, String personID, UUID uuid) {
         this.ID = ID;
         this.name = name;
         this.surname = surname;
         this.personID = personID;
-        this.Uuid = Uuid;
+        Uuid = uuid;
     }
-    public User(){
-    }
+
     public int getID() {
         return ID;
     }
 
     public void setID(int ID) {
         this.ID = ID;
-    }
-
-    public UUID getUuid() {
-        return Uuid;
-    }
-
-    public void setUuid(UUID uuid) {
-        Uuid = uuid;
     }
 
     public String getName() {
@@ -61,5 +49,11 @@ public class User {
         this.personID = personID;
     }
 
+    public UUID getUuid() {
+        return Uuid;
+    }
 
+    public void setUuid(UUID uuid) {
+        Uuid = uuid;
+    }
 }

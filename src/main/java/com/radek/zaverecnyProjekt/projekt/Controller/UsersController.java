@@ -1,10 +1,10 @@
 package com.radek.zaverecnyProjekt.projekt.Controller;
 
+import com.radek.zaverecnyProjekt.projekt.DTO.UserDTO;
+import com.radek.zaverecnyProjekt.projekt.DTO.UserDetailDTO;
 import com.radek.zaverecnyProjekt.projekt.Model.User;
 import com.radek.zaverecnyProjekt.projekt.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,10 +24,12 @@ public class UsersController {
         return userService.getAllUser();
     }
 
-    @GetMapping("users{ID}")
-    public  List<User> getId(@PathVariable("ID")int id){
-        return userService.getId(id);
+
+    @GetMapping("users/{id}")
+    public Object getUser(@PathVariable("id") int id, @RequestParam(name = "detail", required = false, defaultValue = "false") boolean detail) {
+        return userService.getId(id, detail);
     }
+
 
     @PostMapping("users")
     public void addUser(@RequestBody User user) {
