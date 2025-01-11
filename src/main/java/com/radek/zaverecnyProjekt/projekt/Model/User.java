@@ -1,7 +1,5 @@
 package com.radek.zaverecnyProjekt.projekt.Model;
 
-import org.springframework.boot.autoconfigure.domain.EntityScan;
-
 import java.util.UUID;
 
 

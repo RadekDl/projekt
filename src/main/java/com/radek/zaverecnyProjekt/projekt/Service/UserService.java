@@ -38,6 +38,39 @@ public class UserService {
         return users;
 
     }
+//public List<UserDTO> getAllUser(boolean detail) {
+//    String sql;
+//
+//    if(detail){
+//        sql = "select * from users";
+//    }
+//    else{
+//        sql = "select id, name, surname from users";
+//    }
+//        return jdbcTemplate.query(sql,new RowMapper<UserDTO>() {
+//            @Override
+//            public UserDetailDTO mapRow(ResultSet result, int rowNum) throws SQLException {
+//
+//            int userId = result.getInt("ID");
+//            String name = result.getString("Name");
+//            String surname = result.getString("Surname");
+//
+//
+//            if(detail){
+//                String personID = result.getString("PersonID");
+//                String uuidString = result.getString("UUID");
+//                UUID uuid = UUID.fromString(uuidString);
+//                return new UserDetailDTO(userId, name, surname, personID, uuid);
+//            }
+//            else {
+//                return new UserDTO(userId, name, surname);
+//            }
+//
+//            }
+//        });
+//
+//    }
+
 
     public Object getId(int id, boolean detail) {
         if(detail) {

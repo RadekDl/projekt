@@ -1,7 +1,5 @@
 package com.radek.zaverecnyProjekt.projekt.Controller;
 
-import com.radek.zaverecnyProjekt.projekt.DTO.UserDTO;
-import com.radek.zaverecnyProjekt.projekt.DTO.UserDetailDTO;
 import com.radek.zaverecnyProjekt.projekt.Model.User;
 import com.radek.zaverecnyProjekt.projekt.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +17,12 @@ public class UsersController {
     UserService userService;
 
 
-    @GetMapping("users")
-    public List<User> getAllUsers(){
+//    @GetMapping("users")
+//    public List<User> getAllUsers(){
+//        return userService.getAllUser();
+//    }
+@GetMapping("users")
+    public List<User> getAllUsers(@RequestParam(name = "detail", required = false, defaultValue = "false") boolean detail){
         return userService.getAllUser();
     }
 
