@@ -3,9 +3,8 @@ package com.radek.zaverecnyProjekt.projekt.Controller;
 import com.radek.zaverecnyProjekt.projekt.Model.User;
 import com.radek.zaverecnyProjekt.projekt.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 
 @RestController
@@ -17,13 +16,9 @@ public class UsersController {
     UserService userService;
 
 
-//    @GetMapping("users")
-//    public List<User> getAllUsers(){
-//        return userService.getAllUser();
-//    }
-@GetMapping("users")
-    public List<User> getAllUsers(@RequestParam(name = "detail", required = false, defaultValue = "false") boolean detail){
-        return userService.getAllUser();
+    @GetMapping("users/")
+    public Object getAllUsers(@RequestParam(name = "detail", required = false, defaultValue = "false") boolean detail){
+        return userService.getAllUsers(detail);
     }
 
 
@@ -34,8 +29,24 @@ public class UsersController {
 
 
     @PostMapping("users")
-    public void addUser(@RequestBody User user) {
-        userService.addUser(user);
+    public ResponseEntity<String> addUser(@RequestBody User user) {
+        try {
+            userService.addUser(user);
+            return ResponseEntity.ok("Uživatel byl úspěšně přidán.");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Chyba při přidávání uživatele."+ e);
+        }
     }
 
+    @DeleteMapping("users/{id}")
+    public ResponseEntity<String> deleteUser(@PathVariable int id) {
+        try {
+            userService.deleteUserId(id);
+            return ResponseEntity.ok("Uživatel byl úspěšně smazán.");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Chyba při mazání uživatele."+ e);
+        }
+    }
 }
+
+

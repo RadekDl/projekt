@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -38,42 +37,41 @@ public class UserService {
         return users;
 
     }
-//public List<UserDTO> getAllUser(boolean detail) {
-//    String sql;
-//
-//    if(detail){
-//        sql = "select * from users";
-//    }
-//    else{
-//        sql = "select id, name, surname from users";
-//    }
-//        return jdbcTemplate.query(sql,new RowMapper<UserDTO>() {
-//            @Override
-//            public UserDetailDTO mapRow(ResultSet result, int rowNum) throws SQLException {
-//
-//            int userId = result.getInt("ID");
-//            String name = result.getString("Name");
-//            String surname = result.getString("Surname");
-//
-//
-//            if(detail){
-//                String personID = result.getString("PersonID");
-//                String uuidString = result.getString("UUID");
-//                UUID uuid = UUID.fromString(uuidString);
-//                return new UserDetailDTO(userId, name, surname, personID, uuid);
-//            }
-//            else {
-//                return new UserDTO(userId, name, surname);
-//            }
-//
-//            }
-//        });
-//
-//    }
+
+    public Object getAllUsers(boolean detail) {
+        String sql = "select * from users";
+        if (detail) {
+            return jdbcTemplate.query(sql, new RowMapper<UserDetailDTO>() {
+                @Override
+                public UserDetailDTO mapRow(ResultSet result, int rowNum) throws SQLException {
+                    int userId = result.getInt("ID");
+                    String name = result.getString("Name");
+                    String surname = result.getString("Surname");
+                    String personID = result.getString("PersonID");
+                    String uuidString = result.getString("UUID");
+                    UUID uuid = UUID.fromString(uuidString);
+                    return new UserDetailDTO(userId, name, surname, personID, uuid);
+
+                }
+            });
+        } else {
+            return jdbcTemplate.query(sql, new RowMapper<UserDTO>() {
+                @Override
+                public UserDTO mapRow(ResultSet result, int rowNum) throws SQLException {
+                    int userId = result.getInt("ID");
+                    String name = result.getString("Name");
+                    String surname = result.getString("Surname");
+                    return new UserDTO(userId, name, surname);
+
+                }
+            });
+
+        }
+    }
 
 
     public Object getId(int id, boolean detail) {
-        if(detail) {
+        if (detail) {
             String sql = "select * from users where ID = ?";
             return jdbcTemplate.queryForObject(sql, new Object[]{id}, new RowMapper<UserDetailDTO>() {
                 @Override
@@ -87,8 +85,8 @@ public class UserService {
                     return new UserDetailDTO(userId, name, surname, personID, uuid);
                 }
             });
-        }
-        else{String sql = "select * from users where ID = ?";
+        } else {
+            String sql = "select * from users where ID = ?";
             return jdbcTemplate.queryForObject(sql, new Object[]{id}, new RowMapper<UserDTO>() {
                 @Override
                 public UserDTO mapRow(ResultSet result, int rowNum) throws SQLException {
@@ -101,16 +99,20 @@ public class UserService {
         }
     }
 
-        public void addUser(User user) {
-             if (user.getUuid() == null) {
-                user.setUuid(UUID.randomUUID());
-            }
-
-            String sql = "INSERT INTO users ( Name, Surname,PersonID,UUID) VALUES (?, ?, ?, ?)";
-
-            jdbcTemplate.update(sql, user.getName(), user.getSurname(), user.getPersonID(), user.getUuid().toString());
-
+    public void addUser(User user) {
+        if (user.getUuid() == null) {
+            user.setUuid(UUID.randomUUID());
         }
+
+        String sql = "INSERT INTO users ( Name, Surname,PersonID,UUID) VALUES (?, ?, ?, ?)";
+
+        jdbcTemplate.update(sql, user.getName(), user.getSurname(), user.getPersonID(), user.getUuid().toString());
+
     }
+    public void deleteUserId (int id){
+        String sql = "delete from users where ID = ?";
+        jdbcTemplate.update(sql, id);
+    }
+}
 
 
