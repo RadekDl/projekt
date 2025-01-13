@@ -17,7 +17,7 @@ public class UsersController {
 
 
     @GetMapping("users/")
-    public Object getAllUsers(@RequestParam(name = "detail", required = false, defaultValue = "false") boolean detail){
+    public Object getAllUsers(@RequestParam(name = "detail", required = false, defaultValue = "false") boolean detail) {
         return userService.getAllUsers(detail);
     }
 
@@ -40,10 +40,10 @@ public class UsersController {
             } else {
                 return ResponseEntity.status(400).body("PersonID " + user.getPersonID() + " není v seznamu PersonId proto není povoleno vytvoření uživatele.");
             }
-        }catch (Exception e){
-                return ResponseEntity.status(400).body("Chyba při přidávání uživatele." + e);
-            }
+        } catch (Exception e) {
+            return ResponseEntity.status(400).body("Chyba při přidávání uživatele." + e);
         }
+    }
 
 
     @DeleteMapping("users/{id}")
@@ -55,12 +55,22 @@ public class UsersController {
             userService.deleteUserId(id);
             return ResponseEntity.ok("Uživatel byl úspěšně smazán.");
         } catch (Exception e) {
-            return ResponseEntity.status(500).body("Chyba při mazání uživatele "+ e);
+            return ResponseEntity.status(500).body("Chyba při mazání uživatele " + e);
         }
     }
 
-//    @PutMapping("users")
-
+    @PutMapping("users/{id}")
+    public ResponseEntity<String> adjustUser(@PathVariable int id, @RequestBody User user) {
+        try {
+            if (!userService.userExistsId(id)) {
+                return ResponseEntity.status(404).body("Uživatel s ID " + id + " neexistuje.");
+            }
+            userService.adjustUser(id, user.getName(), user.getSurname());
+            return ResponseEntity.ok("Uživatel byl úspěšně aktualizován");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("chyba při aktualizaci uživatele " + e);
+        }
+    }
 }
 
 

@@ -152,6 +152,11 @@ public class UserService {
         return false;
     }
 
+    public void adjustUser (int id, String name, String surname){
+        String sql = "update users set Name = ?, Surname = ?where ID =?";
+        jdbcTemplate.update(sql, name, surname, id);
+    }
+
 }
 
 
