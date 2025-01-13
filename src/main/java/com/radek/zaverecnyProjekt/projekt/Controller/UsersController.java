@@ -24,7 +24,14 @@ public class UsersController {
 
     @GetMapping("users/{id}")
     public Object getUser(@PathVariable("id") int id, @RequestParam(name = "detail", required = false, defaultValue = "false") boolean detail) {
-        return userService.getId(id, detail);
+        try {
+            if (!userService.userExistsId(id)) {
+                return ResponseEntity.status(404).body("Uživatel s ID " + id + " neexistuje.");
+            }
+           return userService.getId(id, detail);
+        }catch (Exception e) {
+                return ResponseEntity.status(500).body("chyba při výpisu uživatele " + e);
+        }
     }
 
 
