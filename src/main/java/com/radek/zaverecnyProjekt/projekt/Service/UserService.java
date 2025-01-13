@@ -7,9 +7,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Scanner;
 import java.util.UUID;
 
 @Service
@@ -109,10 +115,43 @@ public class UserService {
         jdbcTemplate.update(sql, user.getName(), user.getSurname(), user.getPersonID(), user.getUuid().toString());
 
     }
+
     public void deleteUserId (int id){
         String sql = "delete from users where ID = ?";
         jdbcTemplate.update(sql, id);
     }
+
+    public boolean userExistsId(int id) {
+        String sql = "select count(*) from users where ID = ?";
+        Integer count = jdbcTemplate.queryForObject(sql, new Object[]{id}, Integer.class);
+        return count != null && count > 0;
+    }
+
+    public boolean userExistsPersonId(String personId) {
+        String sql = "select count(*) from users where PersonID = ?";
+        Integer count = jdbcTemplate.queryForObject(sql, new Object[]{personId}, Integer.class);
+        return count != null && count > 0;
+    }
+
+    public boolean isPersonIdInFile(String personId) {
+        String nameFile = "src/main/resources/dataPersonId.txt";
+
+
+        try (Scanner scanner = new Scanner(new BufferedReader(new FileReader(nameFile)))) {
+
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine().trim();
+                if (line.equals(personId)) {
+                    return true;
+                }
+            }
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException("PersonID v souboru  " + nameFile + " nenalezeno ", e);
+        }
+
+        return false;
+    }
+
 }
 
 

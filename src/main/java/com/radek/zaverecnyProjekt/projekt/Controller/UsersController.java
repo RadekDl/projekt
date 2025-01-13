@@ -31,22 +31,36 @@ public class UsersController {
     @PostMapping("users")
     public ResponseEntity<String> addUser(@RequestBody User user) {
         try {
-            userService.addUser(user);
-            return ResponseEntity.ok("Uživatel byl úspěšně přidán.");
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body("Chyba při přidávání uživatele."+ e);
+            if (userService.isPersonIdInFile(user.getPersonID())) {
+                if (userService.userExistsPersonId(user.getPersonID())) {
+                    return ResponseEntity.status(409).body("Uživatel s PersonID " + user.getPersonID() + " již existuje, nelze vložit se stejným PersonID");
+                }
+                userService.addUser(user);
+                return ResponseEntity.ok("Uživatel byl úspěšně přidán.");
+            } else {
+                return ResponseEntity.status(400).body("PersonID " + user.getPersonID() + " není v seznamu PersonId proto není povoleno vytvoření uživatele.");
+            }
+        }catch (Exception e){
+                return ResponseEntity.status(400).body("Chyba při přidávání uživatele." + e);
+            }
         }
-    }
+
 
     @DeleteMapping("users/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable int id) {
         try {
+            if (!userService.userExistsId(id)) {
+                return ResponseEntity.status(404).body("Uživatel s ID " + id + " neexistuje.");
+            }
             userService.deleteUserId(id);
             return ResponseEntity.ok("Uživatel byl úspěšně smazán.");
         } catch (Exception e) {
-            return ResponseEntity.status(500).body("Chyba při mazání uživatele."+ e);
+            return ResponseEntity.status(500).body("Chyba při mazání uživatele "+ e);
         }
     }
+
+//    @PutMapping("users")
+
 }
 
 
