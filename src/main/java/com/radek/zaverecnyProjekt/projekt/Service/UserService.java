@@ -125,7 +125,6 @@ public class UserService {
         } catch (FileNotFoundException e) {
             throw new RuntimeException("PersonID v souboru  " + nameFile + " nenalezeno ", e);
         }
-
         return false;
     }
 
