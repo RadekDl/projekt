@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -23,26 +22,6 @@ public class UserService {
 
     @Autowired
     JdbcTemplate jdbcTemplate;
-
-    public List<User> getAllUser() {
-        List<User> users = jdbcTemplate.query("select * from users;", new RowMapper<User>() {
-            @Override
-            public User mapRow(ResultSet result, int rowNum) throws SQLException {
-                User user = new User();
-                user.setID(result.getInt("ID"));
-                user.setName(result.getString("Name"));
-                user.setSurname(result.getString("Surname"));
-                user.setPersonID(result.getString("PersonID"));
-                String uuidString = result.getString("UUID");
-                user.setUuid(UUID.fromString(uuidString));
-                return user;
-
-            }
-        });
-
-        return users;
-
-    }
 
     public Object getAllUsers(boolean detail) {
         String sql = "select * from users";
