@@ -65,7 +65,7 @@ public class UsersController {
             return ResponseEntity.status(500).body("Chyba při mazání uživatele " + e);
         }
     }
-
+    // aktualizace pomocí PathVariable
     @PutMapping("users/{id}")
     public ResponseEntity<String> adjustUser(@PathVariable int id, @RequestBody User user) {
         try {
@@ -73,6 +73,19 @@ public class UsersController {
                 return ResponseEntity.status(404).body("Uživatel s ID " + id + " neexistuje.");
             }
             userService.adjustUser(id, user.getName(), user.getSurname());
+            return ResponseEntity.ok("Uživatel byl úspěšně aktualizován");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("chyba při aktualizaci uživatele " + e);
+        }
+    }
+    //Aktualizace pomocí RequestBody
+    @PutMapping("users")
+    public ResponseEntity<String> adjustUser(@RequestBody User user) {
+        try {
+            if (!userService.userExistsId(user.getID())) {
+                return ResponseEntity.status(404).body("Uživatel s ID " + user.getID() + " neexistuje.");
+            }
+            userService.adjustUser(user.getID(), user.getName(), user.getSurname());
             return ResponseEntity.ok("Uživatel byl úspěšně aktualizován");
         } catch (Exception e) {
             return ResponseEntity.status(500).body("chyba při aktualizaci uživatele " + e);
